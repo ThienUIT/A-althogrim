@@ -40,10 +40,10 @@ export class Spot {
 
         ctx!.fillStyle = color
         if (this.wall) {
-            ctx!.fillStyle = 'black'
+            ctx!.fillStyle = Const.BLACK_COLOR
         }
         if (this.special) {
-            ctx!.fillStyle = 'blue'
+            ctx!.fillStyle = Const.BLUE_COLOR
         }
         ctx!.fillRect(this.i * this.width, this.j * this.height, this.width - 1, this.height - 1);
     }

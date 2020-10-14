@@ -44,8 +44,6 @@ export default class HelloWorld extends Vue {
       }
     }
 
-    this.w = this.width / this.cols
-    this.h = this.height / this.rows
 
     this.startNode = this.grid[0][0]
     this.startNode!.wall = false
@@ -56,7 +54,6 @@ export default class HelloWorld extends Vue {
     this.endNode!.special = true
 
     this.openSet.push(this.startNode)
-    console.log(this.grid)
   }
 
   draw() {
@@ -77,8 +74,12 @@ export default class HelloWorld extends Vue {
           this.path.push(temp.previous)
           temp = temp.previous
         }
-        console.log("DONE")
+        //found the path
+        for (let i = 0; i < this.path.length; i++) {
+          this.path[i].show(Const.BLUE_COLOR)
+        }
         return;
+        console.log("DONE")
       }
 
       this.removeFromArray(this.openSet, current)
@@ -110,28 +111,30 @@ export default class HelloWorld extends Vue {
       }
     } else {
       this.noSolution = true
-      console.log("CAN NOT  FIND THE GOAL")
       return;
+      console.log("CAN NOT  FIND THE GOAL")
     }
+
+    this.drawColor()
+  }
+
+  drawColor() {
     // background
     for (let i = 0; i < this.cols; i++) {
       for (let j = 0; j < this.rows; j++) {
-        this.grid[i][j].show('white')
+        this.grid[i][j].show(Const.WHITE_COLOR)
       }
     }
     //  passed node
     for (let i = 0; i < this.closeSet.length; i++) {
-      this.closeSet[i].show('red')
+      this.closeSet[i].show(Const.RED_COLOR)
     }
     // future node
     for (let i = 0; i < this.openSet.length; i++) {
-      this.openSet[i].show('green')
-    }
-    //found the path
-    for (let i = 0; i < this.path.length; i++) {
-      this.path[i].show('yellow')
+      this.openSet[i].show(Const.GREEN_COLOR)
     }
   }
+
 
   heuristic(a: any, b: any): number {
     const x = (b.i - a.i) * 2
