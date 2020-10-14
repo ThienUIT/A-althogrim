@@ -11,7 +11,7 @@ export class Spot {
     neighbors: Array<Spot>
     previous: null
     wall: boolean
-
+    special: boolean
 
     constructor(x: number, y: number) {
         this.g = 0
@@ -24,10 +24,11 @@ export class Spot {
         this.neighbors = []
         this.previous = null
         this.wall = this.randomWall()
+        this.special = false
     }
 
     randomWall(): boolean {
-        if (Math.random() < 0.5) {
+        if (Math.random() < Const.WEIGHT_OF_WALL) {
             return this.wall = true
         }
         return false
@@ -40,6 +41,9 @@ export class Spot {
         ctx!.fillStyle = color
         if (this.wall) {
             ctx!.fillStyle = 'black'
+        }
+        if (this.special) {
+            ctx!.fillStyle = 'blue'
         }
         ctx!.fillRect(this.i * this.width, this.j * this.height, this.width - 1, this.height - 1);
     }

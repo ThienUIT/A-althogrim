@@ -26,7 +26,6 @@ export default class HelloWorld extends Vue {
   startNode ?: Spot
   endNode ?: Spot
   path: Array<Spot> = []
-
   noSolution = false
 
   setup() {
@@ -47,10 +46,15 @@ export default class HelloWorld extends Vue {
 
     this.w = this.width / this.cols
     this.h = this.height / this.rows
+
     this.startNode = this.grid[0][0]
     this.startNode!.wall = false
-    this.endNode = this.grid[this.cols - 1][this.rows - 1]
+    this.startNode!.special = true
+
+    this.endNode = this.grid[Const.POSITION(this.cols - 1)][Const.POSITION(this.rows - 1)]
     this.endNode!.wall = false
+    this.endNode!.special = true
+
     this.openSet.push(this.startNode)
     console.log(this.grid)
   }
@@ -74,6 +78,7 @@ export default class HelloWorld extends Vue {
           temp = temp.previous
         }
         console.log("DONE")
+        return;
       }
 
       this.removeFromArray(this.openSet, current)
@@ -105,7 +110,8 @@ export default class HelloWorld extends Vue {
       }
     } else {
       this.noSolution = true
-      console.log("ERROR")
+      console.log("CAN NOT  FIND THE GOAL")
+      return;
     }
     // background
     for (let i = 0; i < this.cols; i++) {
@@ -113,11 +119,11 @@ export default class HelloWorld extends Vue {
         this.grid[i][j].show('white')
       }
     }
-    // end node
+    //  passed node
     for (let i = 0; i < this.closeSet.length; i++) {
       this.closeSet[i].show('red')
     }
-    // start node
+    // future node
     for (let i = 0; i < this.openSet.length; i++) {
       this.openSet[i].show('green')
     }
@@ -145,7 +151,6 @@ export default class HelloWorld extends Vue {
   mounted() {
     this.setup()
     setInterval(this.draw, 100)
-
   }
 
 
